@@ -1,0 +1,35 @@
+package token
+
+// String alias to define type of token
+type TokenType string
+
+// Lexical token with its type and literal value
+type Token struct {
+	Type    TokenType
+	Literal string
+}
+
+const (
+	ILLEGAL = "ILLEGAL" // Token or character we don't know about
+	EOF     = "EOF"     // End of file
+
+	IDENT = "IDENT" // Identifiers like variable and function names
+	INT   = "INT"   // Integer literals
+
+	// Operators
+	ASSIGN = "="
+	PLUS   = "+"
+
+	// Delimiters
+	COMMA     = ","
+	SEMICOLON = ";"
+
+	LPAREN = "("
+	RPAREN = ")"
+	LBRACE = "{"
+	RBRACE = "}"
+
+	// Keywords
+	FUNCTION = "FUNCTION"
+	LET      = "LET"
+)
