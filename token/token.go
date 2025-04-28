@@ -6,7 +6,7 @@ type TokenType string
 // Lexical token with its type and literal value
 type Token struct {
 	Type    TokenType
-	Literal string
+	Literal string // Actual value/text
 }
 
 const (
@@ -33,3 +33,16 @@ const (
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
 )
+
+var keywords = map[string]TokenType{
+	"fn":  FUNCTION,
+	"let": LET,
+}
+
+func LookupIdentifier(identifier string) TokenType {
+	if tokenType, ok := keywords[identifier]; ok {
+		return tokenType
+	}
+
+	return IDENT
+}
