@@ -122,10 +122,6 @@ func (lexer *Lexer) readIdentifier() string {
 	return lexer.sourceCode[currentPosition:lexer.currentPosition]
 }
 
-func isLetter(character byte) bool {
-	return 'a' <= character && character <= 'z' || 'A' <= character && character <= 'Z' || character == '_'
-}
-
 func (lexer *Lexer) skipWhitespace() {
 	for lexer.currentChar == ' ' || lexer.currentChar == '\t' || lexer.currentChar == '\n' || lexer.currentChar == '\r' {
 		lexer.readNextChar()
@@ -140,10 +136,6 @@ func (lexer *Lexer) readNumber() string {
 	}
 
 	return lexer.sourceCode[currentPosition:lexer.currentPosition]
-}
-
-func isDigit(character byte) bool {
-	return '0' <= character && character <= '9'
 }
 
 func (lexer *Lexer) peekNextChar() byte {
