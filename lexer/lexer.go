@@ -34,33 +34,39 @@ func (lexer *Lexer) NextToken() token.Token {
 
 	switch lexer.currentChar {
 	case '=':
-		nextToken = createToken(token.ASSIGN, lexer.currentChar)
+		nextToken = lexer.createTwoCharactersToken(token.EQ, '=')
+		if nextToken.Type == token.ILLEGAL {
+			nextToken = lexer.createToken(token.ASSIGN)
+		}
 	case '+':
-		nextToken = createToken(token.PLUS, lexer.currentChar)
+		nextToken = lexer.createToken(token.PLUS)
 	case '-':
-		nextToken = createToken(token.MINUS, lexer.currentChar)
+		nextToken = lexer.createToken(token.MINUS)
 	case '!':
-		nextToken = createToken(token.BANG, lexer.currentChar)
+		nextToken = lexer.createTwoCharactersToken(token.NOT_EQ, '=')
+		if nextToken.Type == token.ILLEGAL {
+			nextToken = lexer.createToken(token.BANG)
+		}
 	case '/':
-		nextToken = createToken(token.SLASH, lexer.currentChar)
+		nextToken = lexer.createToken(token.SLASH)
 	case '*':
-		nextToken = createToken(token.ASTERISK, lexer.currentChar)
+		nextToken = lexer.createToken(token.ASTERISK)
 	case '<':
-		nextToken = createToken(token.LT, lexer.currentChar)
+		nextToken = lexer.createToken(token.LT)
 	case '>':
-		nextToken = createToken(token.GT, lexer.currentChar)
+		nextToken = lexer.createToken(token.GT)
 	case ';':
-		nextToken = createToken(token.SEMICOLON, lexer.currentChar)
+		nextToken = lexer.createToken(token.SEMICOLON)
 	case ',':
-		nextToken = createToken(token.COMMA, lexer.currentChar)
+		nextToken = lexer.createToken(token.COMMA)
 	case '(':
-		nextToken = createToken(token.LPAREN, lexer.currentChar)
+		nextToken = lexer.createToken(token.LPAREN)
 	case ')':
-		nextToken = createToken(token.RPAREN, lexer.currentChar)
+		nextToken = lexer.createToken(token.RPAREN)
 	case '{':
-		nextToken = createToken(token.LBRACE, lexer.currentChar)
+		nextToken = lexer.createToken(token.LBRACE)
 	case '}':
-		nextToken = createToken(token.RBRACE, lexer.currentChar)
+		nextToken = lexer.createToken(token.RBRACE)
 	case 0:
 		nextToken.Literal = ""
 		nextToken.Type = token.EOF
@@ -76,7 +82,7 @@ func (lexer *Lexer) NextToken() token.Token {
 
 			return nextToken
 		} else {
-			nextToken = createToken(token.ILLEGAL, lexer.currentChar)
+			nextToken = lexer.createToken(token.ILLEGAL)
 		}
 	}
 
@@ -84,11 +90,26 @@ func (lexer *Lexer) NextToken() token.Token {
 	return nextToken
 }
 
-func createToken(tokenType token.TokenType, character byte) token.Token {
+func (lexer *Lexer) createToken(tokenType token.TokenType) token.Token {
 	return token.Token{
 		Type:    tokenType,
-		Literal: string(character),
+		Literal: string(lexer.currentChar),
 	}
+}
+
+func (lexer *Lexer) createTwoCharactersToken(tokenType token.TokenType, expectedNextChar byte) token.Token {
+	currentChar := lexer.currentChar
+
+	if lexer.peekNextChar() == expectedNextChar {
+		lexer.readNextChar()
+		literal := string(currentChar) + string(lexer.currentChar)
+		return token.Token{
+			Type:    tokenType,
+			Literal: literal,
+		}
+	}
+
+	return lexer.createToken(token.ILLEGAL)
 }
 
 func (lexer *Lexer) readIdentifier() string {
@@ -123,4 +144,12 @@ func (lexer *Lexer) readNumber() string {
 
 func isDigit(character byte) bool {
 	return '0' <= character && character <= '9'
+}
+
+func (lexer *Lexer) peekNextChar() byte {
+	if lexer.nextReadPosition >= len(lexer.sourceCode) {
+		return 0
+	} else {
+		return lexer.sourceCode[lexer.nextReadPosition]
+	}
 }
