@@ -14,7 +14,7 @@ func Start(input io.Reader, output io.Writer) {
 	scanner := bufio.NewScanner(input)
 
 	for {
-		fmt.Println(output, PROMPT)
+		fmt.Fprint(output, PROMPT)
 
 		scanned := scanner.Scan()
 		if !scanned {
