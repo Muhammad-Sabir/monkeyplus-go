@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"monkeyplus-go/repl"
 	"os"
 	"os/user"
+
+	"github.com/Muhammad-Sabir/monkeyplus-go/repl"
 )
 
 func main() {
