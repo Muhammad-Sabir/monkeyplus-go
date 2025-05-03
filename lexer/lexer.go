@@ -1,6 +1,6 @@
 package lexer
 
-import "monkeyplus-go/token"
+import "github.com/Muhammad-Sabir/monkeyplus-go/token"
 
 type Lexer struct {
 	sourceCode       string // Input  string to tokenize

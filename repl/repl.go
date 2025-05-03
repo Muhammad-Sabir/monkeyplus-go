@@ -4,8 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"monkeyplus-go/lexer"
-	"monkeyplus-go/token"
+
+	"github.com/Muhammad-Sabir/monkeyplus-go/lexer"
+	"github.com/Muhammad-Sabir/monkeyplus-go/token"
 )
 
 const PROMPT = ">> "
